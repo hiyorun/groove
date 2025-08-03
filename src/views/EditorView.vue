@@ -44,7 +44,7 @@ function changeSizeGroup(evt: number) {
           />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-1 gap-3 h-full justify-items-center">
-          <EditorViewer class="shadow-md rounded-md p-3" />
+          <EditorViewer class="shadow-md rounded-md" />
           <EditorPreview class="shadow-md rounded-md" />
         </div>
       </div>

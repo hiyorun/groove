@@ -43,6 +43,7 @@ const properties = computed<Definition | undefined>({
             };
           }
         "
+        @focus="store.hotspotHint = $event"
       />
     </div>
     <div class="p-3">
