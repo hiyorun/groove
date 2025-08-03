@@ -47,14 +47,14 @@ function buttonModifier(op: 'add' | 'sub') {
       class="block mb-1 text-sm font-medium text-gray-900 dark:text-white"
       >{{ label }}</label
     >
-    <div class="relative flex items-center w-full border-1 border-gray-500 dark:border-gray-800 rounded overflow-hidden">
+    <div class="relative flex items-center w-full border-1 border-gray-500 dark:border-gray-800 bg-gray-50 dark:bg-gray-700 rounded overflow-hidden">
       <input
         @focusin="emits('focus', true)"
         @focusout="emits('focus', false)"
         :id="unique('number-input')"
         type="text"
         aria-describedby="helper-text-explanation"
-        class="bg-gray-50 dark:bg-gray-700 border-0 py-1 px-2 rounded w-full"
+        class="border-0 py-1 px-2 w-full"
         :placeholder="placeholder"
         :required="required"
         v-model.number="value"

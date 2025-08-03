@@ -118,6 +118,7 @@ watch(
       class="h-full w-full relative"
       ref="containerRef"
     >
+      <span>Frame: {{store.frame}}</span>
       <img
         v-if="store.currentFrame"
         class="max-w-full max-h-full min-h-28 w-full md:w-auto md:h-full object-contain cursor-preview"

@@ -16,7 +16,7 @@ const properties = computed<Definition | undefined>({
 <template>
   <div class="flex flex-col relative">
     <div class="sticky z-10 top-0 left-0 shadow-md bg-gray-50 dark:bg-gray-700 p-3 grid grid-cols-1
-      md:grid-cols-2 gap-3">
+      sm:grid-cols-2 gap-3">
       <InputNumber
         :label="'X Hotspot'"
         :model-value="properties?.xhot"
@@ -46,17 +46,17 @@ const properties = computed<Definition | undefined>({
         @focus="store.hotspotHint = $event"
       />
     </div>
-    <div class="p-3">
+    <div class="p-3 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-9">
       <div
         :key="index"
         v-for="(frame, index) in store.currentFrames"
         :class="store.frame === index ? 'border-lime-400' : 'border-transparent'"
-        class="flex flex-row gap-2 items-center rounded-md px-2 py-1 border-1"
+        class="relative flex flex-col gap-2 items-center rounded-md p-1 border-1 hover:bg-gray-800"
       >
         <span class="text-gray-900 dark:text-gray-50 w-8">#{{ index }}</span>
         <img
           :src="frame.url"
-          class="object-contain"
+          class="h-10 object-contain"
         />
         <InputNumber
           :label="'Delay'"

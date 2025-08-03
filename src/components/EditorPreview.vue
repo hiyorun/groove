@@ -9,7 +9,7 @@ const store = useCursorStore();
     v-if="store.currentFrame"
     :class="{ 'bg-white text-gray-900': !store.dark, 'bg-gray-900 text-white': store.dark }"
     :style="`cursor: url(${store.currentFrame.url}) ${store.currentDefinition?.xhot} ${store.currentDefinition?.yhot}, pointer`"
-    class="p-2 flex flex-col gap-2 relative"
+    class="w-full h-full p-2 flex flex-col gap-2 relative"
   >
     <button
       @click="store.dark = !store.dark"

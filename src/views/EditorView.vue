@@ -48,7 +48,9 @@ function changeSizeGroup(evt: number) {
           <EditorPreview class="shadow-md rounded-md" />
         </div>
       </div>
-      <div class="overflow-scroll grow shadow-md rounded-md bg-gray-50 dark:bg-gray-700">
+      <div
+        class="overflow-scroll grow shadow-md rounded-md bg-gray-50 dark:bg-gray-700 w-full md:w-2/3"
+      >
         <EditorForms />
       </div>
     </div>
