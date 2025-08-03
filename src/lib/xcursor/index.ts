@@ -1,4 +1,4 @@
 export { makeXCursor } from './make'
-export { parseXCursor } from './parse'
+export { parseXCursor, identXCursor } from './parse'
 
 export type { XCursorImage, XCursorData } from './types'

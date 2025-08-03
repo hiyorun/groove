@@ -1,11 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MainView from './views/MainView.vue';
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <main class="bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-50">
+    <MainView />
+  </main>
 </template>
 
 <style scoped></style>
