@@ -1,32 +1,45 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import EditorForms from '@/components/EditorForms.vue';
 import EditorPreview from '@/components/EditorPreview.vue';
 import EditorViewer from '@/components/EditorViewer.vue';
 import InputDropdown, { type Dropdown } from '@/components/input/InputDropdown.vue';
 import { useCursorStore } from '@/stores/cursorStore';
-import { computed } from 'vue';
+import { useEditorStore } from '@/stores/editorStore';
+import type { Definition } from '@/lib/groove';
 
-const store = useCursorStore();
+const cursorStore = useCursorStore();
+const editorStore = useEditorStore();
 
-const sizeTab = computed<Dropdown<number>[]>({
-  get(): Dropdown<number>[] {
-    return store.sizes.map((size) => {
-      const opt: Dropdown<number> = {
-        name: size.toString(),
-        value: size,
-        active: size === store.selectedSize,
-        disabled: false,
-      };
-      return opt;
-    });
-  },
-  set(val: Dropdown<number>[]) {
-    console.log(val);
-  },
+const sizeTab = computed<Dropdown<number>[]>(() => {
+  return cursorStore.sizes.map((size) => ({
+    name: size.toString(),
+    value: size,
+    active: size === editorStore.selectedSize,
+    disabled: false,
+  }));
+});
+
+const currentDefinition = computed(() => {
+  return cursorStore.getDefinition(editorStore.selectedSize);
+});
+
+const currentFrames = computed(() => {
+  return cursorStore.getFrames(editorStore.selectedSize);
+});
+
+const currentFrame = computed(() => {
+  return currentFrames.value[editorStore.frame] ?? null;
 });
 
 function changeSizeGroup(evt: number) {
-  store.selectedSize = evt;
+  editorStore.selectedSize = evt;
+}
+
+function handleDefinitionUpdate(definition: Definition | undefined) {
+  if (definition) {
+    cursorStore.updateDefinition(editorStore.selectedSize, definition);
+  }
 }
 </script>
 <template>
@@ -39,19 +52,38 @@ function changeSizeGroup(evt: number) {
           Size:
           <InputDropdown
             :options="sizeTab"
-            :label="`${store.selectedSize}`"
+            :label="`${editorStore.selectedSize}`"
             @change="changeSizeGroup($event as number)"
           />
         </div>
         <div class="grid grid-cols-2 md:grid-cols-1 gap-3 h-full justify-items-center">
-          <EditorViewer class="shadow-md rounded-md" />
-          <EditorPreview class="shadow-md rounded-md" />
+          <EditorViewer
+            :definition="currentDefinition"
+            :frame="currentFrame"
+            :frame-number="editorStore.frame"
+            :hotspot-hint="editorStore.hotspotHint"
+            :dark="editorStore.dark"
+            :selected-size="editorStore.selectedSize"
+            class="shadow-md rounded-md"
+          />
+          <EditorPreview
+            :definition="currentDefinition"
+            :frame="currentFrame"
+            :dark="editorStore.dark"
+            class="shadow-md rounded-md"
+          />
         </div>
       </div>
       <div
         class="overflow-scroll grow shadow-md rounded-md bg-gray-50 dark:bg-gray-700 w-full md:w-2/3"
       >
-        <EditorForms />
+        <EditorForms
+          :definition="currentDefinition"
+          :frames="currentFrames"
+          :current-frame="editorStore.frame"
+          @update:definition="handleDefinitionUpdate"
+          @update:hotspot-hint="editorStore.hotspotHint = $event"
+        />
       </div>
     </div>
   </div>

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import type { Definition } from '@/lib/groove';
+import type { Definition, Frame } from '@/lib/groove';
 import InputNumber from './input/InputNumber.vue';
-import { useCursorStore } from '@/stores/cursorStore';
-import { computed } from 'vue';
 
-const store = useCursorStore();
+defineProps<{
+  definition: Definition | undefined;
+  frames: Frame[];
+  currentFrame: number;
+}>();
 
-const properties = computed<Definition | undefined>({
-  get: () => store.currentDefinition,
-  set: (val: Definition | undefined) => {
-    store.currentDefinition = val;
-  },
-});
+const emit = defineEmits<{
+  (e: 'update:definition', value: Definition | undefined): void;
+  (e: 'update:hotspotHint', value: boolean): void;
+}>();
 </script>
 <template>
   <div class="flex flex-col relative">
@@ -19,38 +19,32 @@ const properties = computed<Definition | undefined>({
       sm:grid-cols-2 gap-3">
       <InputNumber
         :label="'X Hotspot'"
-        :model-value="properties?.xhot"
+        :model-value="definition?.xhot"
         @update:model-value="
           ($event: number) => {
-            if (!properties) return;
-            properties = {
-              ...properties,
-              xhot: $event,
-            };
+            if (!definition) return;
+            emit('update:definition', { ...definition, xhot: $event });
           }
         "
-        @focus="store.hotspotHint = $event"
+        @focus="emit('update:hotspotHint', true)"
       />
       <InputNumber
         :label="'Y Hotspot'"
-        :model-value="properties?.yhot"
+        :model-value="definition?.yhot"
         @update:model-value="
           ($event: number) => {
-            if (!properties) return;
-            properties = {
-              ...properties,
-              yhot: $event,
-            };
+            if (!definition) return;
+            emit('update:definition', { ...definition, yhot: $event });
           }
         "
-        @focus="store.hotspotHint = $event"
+        @focus="emit('update:hotspotHint', true)"
       />
     </div>
     <div class="p-3 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-9">
       <div
         :key="index"
-        v-for="(frame, index) in store.currentFrames"
-        :class="store.frame === index ? 'border-lime-400' : 'border-transparent'"
+        v-for="(frame, index) in frames"
+        :class="currentFrame === index ? 'border-lime-400' : 'border-transparent'"
         class="relative flex flex-col gap-2 items-center rounded-md p-1 border-1 hover:bg-gray-800"
       >
         <span class="text-gray-900 dark:text-gray-50 w-8">#{{ index }}</span>

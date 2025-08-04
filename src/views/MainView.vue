@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { useCursorStore } from '@/stores/cursorStore';
 import EditorView from './EditorView.vue';
 import HomeView from './HomeView.vue';
+import { useEditorStore } from '@/stores/editorStore';
 
-const store = useCursorStore();
+const editorStore = useEditorStore();
 </script>
 <template>
   <div class="w-screen h-screen p-3">
-    <HomeView v-if="!store.ready"/>
-    <EditorView v-else/>
+    <HomeView v-if="!editorStore.ready" />
+    <EditorView v-else />
   </div>
 </template>

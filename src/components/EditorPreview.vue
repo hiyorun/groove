@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import { useCursorStore } from '@/stores/cursorStore';
+import type { Definition, Frame } from '@/lib/groove';
 
-const store = useCursorStore();
+const props = defineProps<{
+  definition: Definition | undefined;
+  frame: Frame | null;
+  dark: boolean;
+}>();
+
+const emits = defineEmits<{
+  toggleDark: [val: boolean];
+}>();
 </script>
 
 <template>
   <div
-    v-if="store.currentFrame"
-    :class="{ 'bg-white text-gray-900': !store.dark, 'bg-gray-900 text-white': store.dark }"
-    :style="`cursor: url(${store.currentFrame.url}) ${store.currentDefinition?.xhot} ${store.currentDefinition?.yhot}, pointer`"
+    v-if="frame"
+    :class="{ 'bg-white text-gray-900': !props.dark, 'bg-gray-900 text-white': props.dark }"
+    :style="`cursor: url(${props.frame?.url}) ${props.definition?.xhot} ${props.definition?.yhot}, pointer`"
     class="w-full h-full p-2 flex flex-col gap-2 relative"
   >
     <button
-      @click="store.dark = !store.dark"
+      @click="emits('toggleDark', !dark)"
       class="w-7 absolute top-2 left-2"
     >
-      <template v-if="store.dark">
+      <template v-if="props.dark">
         <svg
           fill="currentColor"
           stroke="currentColor"

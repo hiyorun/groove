@@ -1,8 +1,10 @@
-import { onBeforeUnmount } from 'vue';
+import { onBeforeUnmount, watch } from 'vue';
 import { useCursorStore } from '@/stores/cursorStore';
+import { useEditorStore } from '@/stores/editorStore';
 
 export function useCursorController() {
-  const store = useCursorStore();
+  const cursorStore = useCursorStore();
+  const editorStore = useEditorStore();
   let timer: number;
 
   function clearFrameCounter() {
@@ -10,43 +12,35 @@ export function useCursorController() {
   }
 
   function startFrameCounter() {
-    const cursor = store.cursor;
-    const definition = cursor?.sizes.get(store.selectedSize);
+    clearFrameCounter();
 
-    if (!definition) return;
-
-    const frames = definition.frames;
+    const frames = cursorStore.getFrames(editorStore.selectedSize);
     if (frames.length <= 1) {
-      store.frame = 0;
+      editorStore.frame = 0;
       return;
     }
 
-    const delay = Math.max(1, frames[store.frame].delay || 0);
+    const frame = frames[editorStore.frame];
+    if (!frame) {
+      editorStore.frame = 0;
+      return;
+    }
+
+    const delay = Math.max(1, frame.delay || 0);
     timer = setTimeout(() => {
-      if (!store.cursor) return;
-      store.frame = (store.frame + 1) % frames.length;
-      startFrameCounter(); // recursive loop
+      editorStore.nextFrame(frames.length);
+      startFrameCounter();
     }, delay);
-  }
-
-  function disposeCursorData() {
-    const cleanup = (cur: typeof store.cursor) => {
-      if (!cur) return;
-      cur.sizes.forEach((definition) =>
-        definition.frames.forEach((frame) => URL.revokeObjectURL(frame.url)),
-      );
-    };
-
-    cleanup(store.cursor);
-    cleanup(store.resetState);
-    store.cursor = undefined;
-    store.resetState = undefined;
   }
 
   function dispose() {
     clearFrameCounter();
-    disposeCursorData();
+    cursorStore.clear();
+    editorStore.reset();
   }
+
+  // Restart the animation when the selected size changes
+  watch(() => editorStore.selectedSize, startFrameCounter);
 
   onBeforeUnmount(() => {
     dispose();

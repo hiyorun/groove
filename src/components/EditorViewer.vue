@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
-import { useCursorStore } from '@/stores/cursorStore';
+import type { Definition, Frame } from '@/lib/groove';
 
-const store = useCursorStore();
+const props = defineProps<{
+  definition: Definition | undefined;
+  frame: Frame | null;
+  frameNumber: number;
+  hotspotHint: boolean;
+  dark: boolean;
+  selectedSize: number;
+}>();
+
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const containerRef = ref<HTMLDivElement | null>(null);
 
@@ -12,9 +20,9 @@ function drawBreathingCrosshair(ctx: CanvasRenderingContext2D, time: number) {
   const canvas = canvasRef.value;
   if (!canvas) return;
 
-  const xhot = store.currentDefinition?.xhot ?? 0;
-  const yhot = store.currentDefinition?.yhot ?? 0;
-  const imageSize = store.selectedSize ?? 1;
+  const imageSize = props.selectedSize ?? 1;
+  const xhot = props.definition?.xhot ?? 0;
+  const yhot = props.definition?.yhot ?? 0;
 
   const rect = canvas.getBoundingClientRect();
   const cssWidth = rect.width;
@@ -51,7 +59,7 @@ function drawBreathingCrosshair(ctx: CanvasRenderingContext2D, time: number) {
 
 function animate(time: number) {
   const canvas = canvasRef.value;
-  if (canvas && store.selectedSize) {
+  if (canvas && props.selectedSize) {
     const ctx = canvas.getContext('2d');
     if (ctx) {
       drawBreathingCrosshair(ctx, time);
@@ -99,7 +107,7 @@ onBeforeUnmount(() => {
 });
 
 watch(
-  () => [store.selectedSize, store.currentDefinition],
+  () => [props.selectedSize, props.definition],
   () => {
     nextTick(() => {
       resizeCanvas();
@@ -112,26 +120,28 @@ watch(
 <template>
   <div
     class="w-full h-full p-3 flex flex-col"
-    :class="{ 'bg-white text-gray-900': !store.dark, 'bg-gray-900 text-white': store.dark }"
+    :class="{
+      'bg-white text-gray-900': !dark,
+      'bg-gray-900 text-white': dark,
+    }"
   >
-    <span>Frame: {{store.frame}}</span>
+    <span>Frame: {{ frameNumber }}</span>
     <div
       class="h-full w-full relative"
       ref="containerRef"
     >
       <img
-        v-if="store.currentFrame"
+        v-if="frame"
         class="max-w-full max-h-full min-h-28 w-full md:w-auto md:h-full object-contain pixel"
-        :src="store.currentFrame.url"
+        :src="frame.url"
       />
       <canvas
         ref="canvasRef"
-        :class="{ hidden: !store.hotspotHint }"
+        :class="{ hidden: !hotspotHint }"
         class="absolute top-0 left-0 w-full h-full pointer-events-none object-contain pixel"
       />
     </div>
   </div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
