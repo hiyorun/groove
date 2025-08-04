@@ -56,7 +56,7 @@ const properties = computed<Definition | undefined>({
         <span class="text-gray-900 dark:text-gray-50 w-8">#{{ index }}</span>
         <img
           :src="frame.url"
-          class="h-10 object-contain"
+          class="h-10 object-contain pixel"
         />
         <InputNumber
           :label="'Delay'"
@@ -66,4 +66,5 @@ const properties = computed<Definition | undefined>({
     </div>
   </div>
 </template>
-<style scoped></style>
+<style scoped>
+</style>

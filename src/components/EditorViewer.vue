@@ -111,33 +111,27 @@ watch(
 
 <template>
   <div
-    class="w-full h-full p-3"
+    class="w-full h-full p-3 flex flex-col"
     :class="{ 'bg-white text-gray-900': !store.dark, 'bg-gray-900 text-white': store.dark }"
   >
+    <span>Frame: {{store.frame}}</span>
     <div
       class="h-full w-full relative"
       ref="containerRef"
     >
-      <span>Frame: {{store.frame}}</span>
       <img
         v-if="store.currentFrame"
-        class="max-w-full max-h-full min-h-28 w-full md:w-auto md:h-full object-contain cursor-preview"
+        class="max-w-full max-h-full min-h-28 w-full md:w-auto md:h-full object-contain pixel"
         :src="store.currentFrame.url"
       />
       <canvas
         ref="canvasRef"
         :class="{ hidden: !store.hotspotHint }"
-        class="absolute top-0 left-0 w-full h-full pointer-events-none object-contain"
+        class="absolute top-0 left-0 w-full h-full pointer-events-none object-contain pixel"
       />
     </div>
   </div>
 </template>
 
 <style scoped>
-.cursor-preview {
-  image-rendering: pixelated;
-}
-canvas {
-  image-rendering: pixelated;
-}
 </style>
