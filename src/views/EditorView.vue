@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import EditorForms from '@/components/EditorForms.vue';
-import EditorPreview from '@/components/EditorPreview.vue';
-import EditorViewer from '@/components/EditorViewer.vue';
+import EditorForms from '@/components/editor/EditorForms.vue';
+import EditorPreview from '@/components/editor/EditorPreview.vue';
+import EditorViewer from '@/components/editor/EditorViewer.vue';
 import InputDropdown, { type Dropdown } from '@/components/input/InputDropdown.vue';
 import { useCursorStore } from '@/stores/cursorStore';
 import { useEditorStore } from '@/stores/editorStore';

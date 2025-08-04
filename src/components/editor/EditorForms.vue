@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Definition, Frame } from '@/lib/groove';
-import InputNumber from './input/InputNumber.vue';
+import InputNumber from '@/components/input/InputNumber.vue';
 
 defineProps<{
   definition: Definition | undefined;
