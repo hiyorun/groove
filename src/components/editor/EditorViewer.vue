@@ -1,120 +1,119 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
-import type { Definition, Frame } from '@/lib/groove';
+  import { onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
+  import type { Definition, Frame } from '@/lib/groove';
 
-const props = defineProps<{
-  definition: Definition | undefined;
-  frame: Frame | null;
-  frameNumber: number;
-  hotspotHint: boolean;
-  dark: boolean;
-  selectedSize: number;
-}>();
+  const props = defineProps<{
+    definition: Definition | undefined;
+    frame: Frame | null;
+    frameNumber: number;
+    hotspotHint: boolean;
+    dark: boolean;
+    selectedSize: number;
+  }>();
 
-const canvasRef = ref<HTMLCanvasElement | null>(null);
-const containerRef = ref<HTMLDivElement | null>(null);
+  const canvasRef = ref<HTMLCanvasElement | null>(null);
+  const containerRef = ref<HTMLDivElement | null>(null);
 
-let animationFrameId: number;
+  let animationFrameId: number;
 
-function drawBreathingCrosshair(ctx: CanvasRenderingContext2D, time: number) {
-  const canvas = canvasRef.value;
-  if (!canvas) return;
+  function drawBreathingCrosshair(ctx: CanvasRenderingContext2D, time: number) {
+    const canvas = canvasRef.value;
+    if (!canvas) return;
 
-  const imageSize = props.selectedSize ?? 1;
-  const xhot = props.definition?.xhot ?? 0;
-  const yhot = props.definition?.yhot ?? 0;
+    const imageSize = props.selectedSize ?? 1;
+    const xhot = props.definition?.xhot ?? 0;
+    const yhot = props.definition?.yhot ?? 0;
 
-  const rect = canvas.getBoundingClientRect();
-  const cssWidth = rect.width;
-  const cssHeight = rect.height;
+    const rect = canvas.getBoundingClientRect();
+    const cssWidth = rect.width;
+    const cssHeight = rect.height;
 
-  const normX = xhot / imageSize;
-  const normY = yhot / imageSize;
+    const normX = xhot / imageSize;
+    const normY = yhot / imageSize;
 
-  const screenX = normX * cssWidth;
-  const screenY = normY * cssHeight;
+    const screenX = normX * cssWidth;
+    const screenY = normY * cssHeight;
 
-  const pixelRatioX = canvas.width / cssWidth;
-  const pixelRatioY = canvas.height / cssHeight;
-  const drawX = screenX * pixelRatioX;
-  const drawY = screenY * pixelRatioY;
+    const pixelRatioX = canvas.width / cssWidth;
+    const pixelRatioY = canvas.height / cssHeight;
+    const drawX = screenX * pixelRatioX;
+    const drawY = screenY * pixelRatioY;
 
-  const opacity = (Math.sin(time / 100) + 1) / 2;
+    const opacity = (Math.sin(time / 100) + 1) / 2;
 
-  const minDim = Math.min(canvas.width, canvas.height);
-  const crosshairSize = Math.max(50, Math.min(20, minDim * 0.1));
-  const lineWidth = Math.max(1, minDim * 0.01);
+    const minDim = Math.min(canvas.width, canvas.height);
+    const crosshairSize = Math.max(50, Math.min(20, minDim * 0.1));
+    const lineWidth = Math.max(1, minDim * 0.01);
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = `rgba(255, 0, 0, ${opacity})`;
-  ctx.lineWidth = lineWidth;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = `rgba(255, 0, 0, ${opacity})`;
+    ctx.lineWidth = lineWidth;
 
-  ctx.beginPath();
-  ctx.moveTo(drawX - crosshairSize, drawY);
-  ctx.lineTo(drawX + crosshairSize, drawY);
-  ctx.moveTo(drawX, drawY - crosshairSize);
-  ctx.lineTo(drawX, drawY + crosshairSize);
-  ctx.stroke();
-}
+    ctx.beginPath();
+    ctx.moveTo(drawX - crosshairSize, drawY);
+    ctx.lineTo(drawX + crosshairSize, drawY);
+    ctx.moveTo(drawX, drawY - crosshairSize);
+    ctx.lineTo(drawX, drawY + crosshairSize);
+    ctx.stroke();
+  }
 
-function animate(time: number) {
-  const canvas = canvasRef.value;
-  if (canvas && props.selectedSize) {
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      drawBreathingCrosshair(ctx, time);
+  function animate(time: number) {
+    const canvas = canvasRef.value;
+    if (canvas && props.selectedSize) {
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        drawBreathingCrosshair(ctx, time);
+      }
     }
-  }
-  animationFrameId = requestAnimationFrame(animate);
-}
-
-function resizeCanvas() {
-  if (!canvasRef.value) return;
-
-  const canvas = canvasRef.value;
-  const baseSize = 1024;
-
-  canvas.width = baseSize;
-  canvas.height = baseSize;
-
-  const container = containerRef.value;
-  if (container) {
-    canvas.style.width = container.clientWidth + 'px';
-    canvas.style.height = container.clientHeight + 'px';
-  }
-}
-
-onMounted(() => {
-  nextTick(() => {
-    resizeCanvas();
     animationFrameId = requestAnimationFrame(animate);
+  }
 
-    if (containerRef.value) {
-      const observer = new ResizeObserver(() => {
-        resizeCanvas();
-      });
-      observer.observe(containerRef.value);
+  function resizeCanvas() {
+    if (!canvasRef.value) return;
 
-      onBeforeUnmount(() => {
-        observer.disconnect();
-      });
+    const canvas = canvasRef.value;
+    const baseSize = 1024;
+
+    canvas.width = baseSize;
+    canvas.height = baseSize;
+
+    const container = containerRef.value;
+    if (container) {
+      canvas.style.width = container.clientWidth + 'px';
+      canvas.style.height = container.clientHeight + 'px';
     }
-  });
-});
+  }
 
-onBeforeUnmount(() => {
-  cancelAnimationFrame(animationFrameId);
-});
+  let observer: ResizeObserver;
 
-watch(
-  () => [props.selectedSize, props.definition],
-  () => {
+  onMounted(() => {
     nextTick(() => {
       resizeCanvas();
+      animationFrameId = requestAnimationFrame(animate);
+
+      if (containerRef.value) {
+        observer = new ResizeObserver(() => {
+          resizeCanvas();
+        });
+        observer.observe(containerRef.value);
+      }
     });
-  },
-  { deep: true },
-);
+  });
+
+  onBeforeUnmount(() => {
+    observer.disconnect();
+    cancelAnimationFrame(animationFrameId);
+  });
+
+  watch(
+    () => [props.selectedSize, props.definition],
+    () => {
+      nextTick(() => {
+        resizeCanvas();
+      });
+    },
+    { deep: true },
+  );
 </script>
 
 <template>
@@ -145,3 +144,4 @@ watch(
 </template>
 
 <style scoped></style>
+
