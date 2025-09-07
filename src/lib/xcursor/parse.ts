@@ -18,11 +18,10 @@ export async function parseXCursor(file: File | Blob): Promise<XCursorData> {
   for (let i = 0; i < tocCount; i++) {
     const offset = 16 + i * 12;
     const type = view.getUint32(offset, true);
-    const subtype = view.getUint32(offset + 4, true);
     const pos = view.getUint32(offset + 8, true);
 
     if (type === 0xfffd0002) {
-      const image = parseImageChunk(view, pos, subtype);
+      const image = parseImageChunk(view, pos);
       images.push(image);
     }
     // Skips other chunk types like comments, etc.
@@ -41,11 +40,8 @@ function verifyMagic(view: DataView): Error | null {
   return null;
 }
 
-function parseImageChunk(view: DataView, pos: number, subtype: number): XCursorImage {
-  const chunkSize = view.getUint32(pos, true);
-  const chunkType = view.getUint32(pos + 4, true);
+function parseImageChunk(view: DataView, pos: number): XCursorImage {
   const chunkSub = view.getUint32(pos + 8, true);
-  const chunkVer = view.getUint32(pos + 12, true);
 
   const width = view.getUint32(pos + 16, true);
   const height = view.getUint32(pos + 20, true);

@@ -11,7 +11,7 @@ export type Cursor = {
   sizes: SizeGroups;
 };
 
-export type SizeGroups = Map<number, Definition>
+export type SizeGroups = Map<number, Definition>;
 
 export type Definition = {
   xhot: number;
@@ -19,11 +19,17 @@ export type Definition = {
   frames: Frame[];
 };
 
+export type FrameMetadata = {
+  userAdded?: boolean;
+  changed?: boolean;
+};
+
 export type Frame = {
   width: number;
   height: number;
   delay: number;
   url: string;
+  _meta?: FrameMetadata;
 };
 
 export interface CursorHandler {
