@@ -8,14 +8,14 @@ export type ModalInstance<T = void> = {
   reject: (reason: string) => void;
 };
 
-export class Modal<T = void> {
+export class Modal<P = Record<string, unknown>, T = void> {
   public readonly id: string;
   public readonly component: Component;
-  public readonly props: Record<string, unknown>;
+  public readonly props: P;
   private _resolve!: (value: T) => void;
   private _reject!: (reason: string) => void;
 
-  constructor(component: Component, props: Record<string, unknown> = {}) {
+  constructor(component: Component, props: P) {
     this.id = crypto.randomUUID();
     this.component = component;
     this.props = props;

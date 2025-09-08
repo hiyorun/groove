@@ -1,5 +1,25 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  src: url('@/assets/fonts/material-symbols.woff2') format('woff');
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+}
+
 .pixel {
   image-rendering: pixelated;
 }

@@ -49,7 +49,7 @@
     >
     <div
       class="relative flex w-full items-center overflow-hidden bg-gray-50 border border-gray-300
-        text-gray-900 text-sm rounded-lg [&:has(input:focus)]:ring-blue-500
+        text-gray-900 text-sm rounded-md [&:has(input:focus)]:ring-blue-500
         [&:has(input:focus)]:border-blue-500 dark:bg-gray-700 dark:border-gray-600
         dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
         dark:focus:border-blue-500"
@@ -60,7 +60,7 @@
         :id="unique('number-input')"
         type="text"
         aria-describedby="helper-text-explanation"
-        class="w-full border-0 px-2 py-1"
+        class="w-full border-0 px-2 py-1 text-sm"
         :placeholder="placeholder"
         :required="required"
         v-model.number="value"

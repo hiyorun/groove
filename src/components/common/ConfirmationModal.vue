@@ -1,6 +1,13 @@
 <script setup lang="ts">
   import { useModal } from '@/composables/useModal';
 
+  export type ConfirmationModalProps = {
+    title: string;
+    message: string;
+    confirmText?: string;
+    cancelText?: string;
+  };
+
   const { resolveModal, rejectModal } = useModal();
 
   const {
@@ -8,12 +15,7 @@
     message,
     confirmText = 'Confirm',
     cancelText = 'Cancel',
-  } = defineProps<{
-    title: string;
-    message: string;
-    confirmText?: string;
-    cancelText?: string;
-  }>();
+  } = defineProps<ConfirmationModalProps>();
 
   const handleConfirm = () => {
     resolveModal(undefined);
@@ -31,7 +33,8 @@
     <div class="flex justify-end gap-3">
       <button
         @click="handleCancel"
-        class="px-4 py-2 rounded-md text-gray-800 dark:text-white hover:bg-gray-100 hover:dark:bg-gray-700 cursor-pointer"
+        class="px-4 py-2 rounded-md text-gray-800 dark:text-white hover:bg-gray-100
+          hover:dark:bg-gray-700 cursor-pointer"
       >
         {{ cancelText }}
       </button>
