@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
+const _inputID = ref<string>(crypto.randomUUID());
 const emits = defineEmits<{
   change: [value: Event];
 }>();
@@ -8,6 +11,10 @@ const { accept = ['*'], description = '' } = defineProps<{
   description?: string;
 }>();
 
+  function unique(id: string): string {
+    return id + _inputID.value;
+  }
+
 function upload(evt: Event) {
   emits('change', evt);
 }
@@ -15,7 +22,7 @@ function upload(evt: Event) {
 <template>
   <div class="flex items-center justify-center w-full">
     <label
-      for="dropzone-file"
+      :for="unique('dropzone-file-')"
       class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
     >
       <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -45,7 +52,7 @@ function upload(evt: Event) {
         </p>
       </div>
       <input
-        id="dropzone-file"
+        :id="unique('dropzone-file-')"
         :accept="accept.join(',')"
         type="file"
         class="hidden"
