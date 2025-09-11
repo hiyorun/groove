@@ -1,4 +1,4 @@
-import { onBeforeUnmount, watch } from 'vue';
+import { watch } from 'vue';
 import { useCursorStore } from '@/stores/cursorStore';
 import { useEditorStore } from '@/stores/editorStore';
 
@@ -41,10 +41,6 @@ export function useCursorController() {
 
   // Restart the animation when the selected size changes
   watch(() => editorStore.selectedSize, startFrameCounter);
-
-  onBeforeUnmount(() => {
-    dispose();
-  });
 
   return {
     startFrameCounter,
