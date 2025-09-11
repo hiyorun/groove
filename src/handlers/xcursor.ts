@@ -7,7 +7,6 @@ export const xcursorHandler: CursorHandler = {
 
     const sizeGroups: SizeGroups = new Map();
 
-    // Step 1: Process all images in parallel, but keep track of their original index
     const processed = await Promise.all(
       cursor.images.map(async (image, index) => {
         const canvas = document.createElement('canvas');
@@ -40,10 +39,8 @@ export const xcursorHandler: CursorHandler = {
       }),
     );
 
-    // Step 2: Sort processed frames by their original index to restore order
     processed.sort((a, b) => a.index - b.index);
 
-    // Step 3: Populate sizeGroups in order
     for (const { size, frame, xhot, yhot } of processed) {
       if (sizeGroups.has(size)) {
         sizeGroups.get(size)!.frames.push(frame);
@@ -94,7 +91,6 @@ export const xcursorHandler: CursorHandler = {
         }),
     );
 
-    // Optional: sort if makeXCursor needs deterministic frame order within each size
     images.sort((a, b) => {
       if (a.size !== b.size) return a.size - b.size;
       return a.index - b.index;

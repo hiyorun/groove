@@ -21,6 +21,7 @@ export const useEditorStore = defineStore('editor', () => {
     frame.value = 0;
     selectedSize.value = 0;
     hotspotHint.value = false;
+    ready.value = false
   }
 
   return {

@@ -14,9 +14,11 @@
   import ConfirmationModal, {
     type ConfirmationModalProps,
   } from '@/components/common/ConfirmationModal.vue';
+import { useCursorController } from '@/composables/useCursorAnimation';
 
   const cursorStore = useCursorStore();
   const editorStore = useEditorStore();
+  const controller = useCursorController()
   const modal = useModal();
 
   const sizeTab = computed<SelectOption<number>[]>(() => {
@@ -73,8 +75,7 @@
       });
 
       await modal.openModal(closeConfirm);
-      cursorStore.clear();
-      editorStore.ready = false;
+      controller.dispose()
     } catch (reason) {
       console.log('User cancelled', reason);
       return;
