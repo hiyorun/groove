@@ -8,14 +8,18 @@ export type Collection = {
 export type Cursor = {
   name: string;
   version: number;
+  hotspot: CursorHotspot;
   sizes: SizeGroups;
+};
+
+export type CursorHotspot = {
+  x: number;
+  y: number;
 };
 
 export type SizeGroups = Map<number, Definition>;
 
 export type Definition = {
-  xhot: number;
-  yhot: number;
   frames: Frame[];
 };
 
@@ -34,6 +38,6 @@ export type Frame = {
 
 export interface CursorHandler {
   parse(file: File | Blob): Promise<Cursor>;
-  make(cursor: Cursor): Promise<Blob>;
+  make(cursor: Cursor): Promise<[Blob, string]>;
   ident(file: File | Blob): Promise<boolean>;
 }

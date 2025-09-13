@@ -28,6 +28,10 @@
           name: 'XCursor',
           value: 'xcursor',
         },
+        {
+          name: 'Hyprcursor',
+          value: 'hyprcursor',
+        },
       ]"
     >
       <template #dropdown-toggle>
