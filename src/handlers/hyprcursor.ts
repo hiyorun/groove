@@ -1,5 +1,5 @@
-import type { CursorHandler, Cursor, SizeGroups, Definition } from '@/lib/groove';
-import { identHlc, parseHlc } from '@/lib/hyprcursor/parse';
+import type { CursorHandler, Cursor, SizeGroups, Definition, Frame } from '@/lib/groove';
+import { identHlc, makeHlc, parseHlc, type HyprCursor } from '@/lib/hyprcursor';
 
 export const hyprcursorHandler: CursorHandler = {
   async parse(file: File): Promise<Cursor> {
@@ -26,18 +26,41 @@ export const hyprcursorHandler: CursorHandler = {
         url: frame.file.url,
       });
       sizeGroups.set(frame.size, definition);
-      console.log(definition, frame.file.url)
+      console.log(definition, frame.file.url);
     });
 
+    const name = file.name.endsWith('.hlc') ? file.name.slice(0, -4) : file.name;
     return {
-      name: file.name,
+      name: name,
       version: 1,
       sizes: sizeGroups,
     };
   },
-  async make(cursor: Cursor): Promise<Blob> {
-    console.log('Unimplemented!', cursor);
-    return new Blob();
+  async make(cursor: Cursor): Promise<[Blob, string]> {
+    const hyprCursor: HyprCursor = {
+      hotspot_x: 0,
+      hotspot_y: 0,
+      nominal_size: 1,
+      resize_algorithm: 'none',
+      define_override: [],
+      define_size: [],
+    };
+
+    cursor.sizes.forEach((definition: Definition, size: number) => {
+      definition.frames.forEach((frame: Frame, index: number) => {
+        hyprCursor.define_size.push({
+          size: frame.width,
+          delay: frame.delay,
+          file: {
+            name: `${cursor.name}-${size}-${index}.png`,
+            url: frame.url,
+          },
+        });
+      });
+    });
+    const hlc = await makeHlc(hyprCursor);
+    const packageName = cursor.name.endsWith('.hlc') ? cursor.name : `${cursor.name}.hlc`;
+    return [hlc, packageName];
   },
 
   async ident(file: File): Promise<boolean> {

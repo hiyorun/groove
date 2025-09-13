@@ -77,7 +77,7 @@ export function serializeMetaHl(data: HyprCursor): string {
   }
 
   for (const frame of data.define_size) {
-    lines.push(`define_size = ${frame.size}, ${frame.file}, ${frame.delay}`);
+    lines.push(`define_size = ${frame.size}, ${frame.file.name}, ${frame.delay}`);
   }
 
   return lines.join('\n');

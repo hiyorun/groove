@@ -15,6 +15,7 @@
     type ConfirmationModalProps,
   } from '@/components/common/ConfirmationModal.vue';
 import { useCursorController } from '@/composables/useCursorAnimation';
+import { hyprcursorHandler } from '@/handlers/hyprcursor';
 
   const cursorStore = useCursorStore();
   const editorStore = useEditorStore();
@@ -58,6 +59,9 @@ import { useCursorController } from '@/composables/useCursorAnimation';
     switch (val) {
       case 'xcursor':
         cursorStore.make(xcursorHandler);
+        break;
+      case 'hyprcursor':
+        cursorStore.make(hyprcursorHandler);
         break;
       default:
         console.log('Unimplemented');

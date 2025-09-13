@@ -34,6 +34,6 @@ export type Frame = {
 
 export interface CursorHandler {
   parse(file: File | Blob): Promise<Cursor>;
-  make(cursor: Cursor): Promise<Blob>;
+  make(cursor: Cursor): Promise<[Blob, string]>;
   ident(file: File | Blob): Promise<boolean>;
 }

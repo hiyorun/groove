@@ -9,12 +9,12 @@ export async function parseCursorFile(handler: CursorHandler, file: File): Promi
 }
 
 export async function makeCursorFile(handler: CursorHandler, cursor: Cursor): Promise<void> {
-  const builtCursor = await handler.make(cursor);
+  const [builtCursor, name] = await handler.make(cursor);
   const url = URL.createObjectURL(builtCursor);
 
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = cursor.name;
+  anchor.download = name;
   anchor.click();
 
   URL.revokeObjectURL(url);

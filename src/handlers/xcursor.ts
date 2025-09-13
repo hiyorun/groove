@@ -59,7 +59,7 @@ export const xcursorHandler: CursorHandler = {
       sizes: sizeGroups,
     };
   },
-  async make(cursor: Cursor): Promise<Blob> {
+  async make(cursor: Cursor): Promise<[Blob, string]> {
     const images = await Promise.all(
       Array.from(cursor.sizes.entries())
         .flatMap(([size, definition]) =>
@@ -97,7 +97,8 @@ export const xcursorHandler: CursorHandler = {
     });
 
     const buffer = makeXCursor(images, cursor.version);
-    return new Blob([buffer], { type: 'application/octet-stream' });
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    return [blob, cursor.name]
   },
 
   async ident(file: File): Promise<boolean> {
