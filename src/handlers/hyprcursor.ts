@@ -11,8 +11,6 @@ export const hyprcursorHandler: CursorHandler = {
       let definition: Definition | undefined;
       if (!sizeGroups.has(frame.size)) {
         definition = {
-          xhot: Math.floor(frame.size * cursor.hotspot_x),
-          yhot: Math.floor(frame.size * cursor.hotspot_y),
           frames: [],
         };
         sizeGroups.set(frame.size, definition);
@@ -33,6 +31,10 @@ export const hyprcursorHandler: CursorHandler = {
     return {
       name: name,
       version: 1,
+      hotspot: {
+        x: cursor.hotspot_x,
+        y: cursor.hotspot_y,
+      },
       sizes: sizeGroups,
     };
   },

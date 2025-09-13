@@ -1,15 +1,15 @@
 <script setup lang="ts">
-  import type { Definition, Frame } from '@/lib/groove';
+  import type { CursorHotspot, Frame } from '@/lib/groove';
   import InputNumber from '@/components/input/InputNumber.vue';
 
   defineProps<{
-    definition: Definition | undefined;
+    cursorHotspot: CursorHotspot | undefined;
     frames: Frame[];
     currentFrame: number;
   }>();
 
   const emit = defineEmits<{
-    (e: 'update:definition', value: Definition | undefined): void;
+    (e: 'update:cursorHotspot', value: CursorHotspot | undefined): void;
     (e: 'update:hotspotHint', value: boolean): void;
   }>();
 </script>
@@ -21,28 +21,37 @@
     >
       <InputNumber
         :label="'X Hotspot'"
-        :model-value="definition?.xhot"
+        :model-value="Math.round(cursorHotspot ? cursorHotspot.x * 100 : 0)"
         @update:model-value="
           ($event: number) => {
-            if (!definition) return;
-            emit('update:definition', { ...definition, xhot: $event });
+            if (!cursorHotspot) return;
+            emit('update:cursorHotspot', {
+              x: $event / 100,
+              y: cursorHotspot.y,
+            });
           }
         "
         @focus="emit('update:hotspotHint', $event)"
       />
       <InputNumber
         :label="'Y Hotspot'"
-        :model-value="definition?.yhot"
+        :model-value="Math.round(cursorHotspot ? cursorHotspot.y * 100 : 0)"
         @update:model-value="
           ($event: number) => {
-            if (!definition) return;
-            emit('update:definition', { ...definition, yhot: $event });
+            if (!cursorHotspot) return;
+            emit('update:cursorHotspot', {
+              y: $event / 100,
+              x: cursorHotspot.x,
+            });
           }
         "
         @focus="emit('update:hotspotHint', $event)"
       />
     </div>
-    <div class="p-3 grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8 gap-2">
+    <div
+      class="p-3 grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8
+        gap-2"
+    >
       <div
         :key="index"
         v-for="(frame, index) in frames"

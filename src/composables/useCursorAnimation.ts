@@ -1,46 +1,47 @@
-import { watch } from 'vue';
 import { useCursorStore } from '@/stores/cursorStore';
 import { useEditorStore } from '@/stores/editorStore';
 
 export function useCursorController() {
   const cursorStore = useCursorStore();
   const editorStore = useEditorStore();
-  let timer: number;
+
+  let timer: ReturnType<typeof setTimeout> | null = null;
 
   function clearFrameCounter() {
-    clearTimeout(timer);
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
   }
 
-  function startFrameCounter() {
-    clearFrameCounter();
-
+  function tick() {
     const frames = cursorStore.getFrames(editorStore.selectedSize);
+
     if (frames.length <= 1) {
       editorStore.frame = 0;
       return;
     }
 
-    const frame = frames[editorStore.frame];
-    if (!frame) {
-      editorStore.frame = 0;
-      return;
-    }
-
+    const frame = frames[editorStore.frame] ?? frames[0];
     const delay = Math.max(1, frame.delay || 0);
+
     timer = setTimeout(() => {
       editorStore.nextFrame(frames.length);
-      startFrameCounter();
+      tick();
     }, delay);
   }
 
+  function startFrameCounter() {
+    clearFrameCounter();
+    tick();
+  }
+
   function dispose() {
+    console.log("Disposing")
     clearFrameCounter();
     cursorStore.clear();
     editorStore.reset();
   }
-
-  // Restart the animation when the selected size changes
-  watch(() => editorStore.selectedSize, startFrameCounter);
 
   return {
     startFrameCounter,
@@ -48,3 +49,4 @@ export function useCursorController() {
     dispose,
   };
 }
+

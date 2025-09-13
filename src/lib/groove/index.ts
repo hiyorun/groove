@@ -8,14 +8,18 @@ export type Collection = {
 export type Cursor = {
   name: string;
   version: number;
+  hotspot: CursorHotspot;
   sizes: SizeGroups;
+};
+
+export type CursorHotspot = {
+  x: number;
+  y: number;
 };
 
 export type SizeGroups = Map<number, Definition>;
 
 export type Definition = {
-  xhot: number;
-  yhot: number;
   frames: Frame[];
 };
 

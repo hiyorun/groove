@@ -6,7 +6,7 @@
   import InputSelect, { type SelectOption } from '@/components/input/InputSelect.vue';
   import { useCursorStore } from '@/stores/cursorStore';
   import { useEditorStore } from '@/stores/editorStore';
-  import type { Definition } from '@/lib/groove';
+  import type { CursorHotspot } from '@/lib/groove';
   import EditorActions from '@/components/editor/EditorActions.vue';
   import { xcursorHandler } from '@/handlers/xcursor';
   import { useModal } from '@/composables/useModal';
@@ -14,12 +14,12 @@
   import ConfirmationModal, {
     type ConfirmationModalProps,
   } from '@/components/common/ConfirmationModal.vue';
-import { useCursorController } from '@/composables/useCursorAnimation';
-import { hyprcursorHandler } from '@/handlers/hyprcursor';
+  import { useCursorController } from '@/composables/useCursorAnimation';
+  import { hyprcursorHandler } from '@/handlers/hyprcursor';
 
   const cursorStore = useCursorStore();
   const editorStore = useEditorStore();
-  const controller = useCursorController()
+  const controller = useCursorController();
   const modal = useModal();
 
   const sizeTab = computed<SelectOption<number>[]>(() => {
@@ -31,8 +31,8 @@ import { hyprcursorHandler } from '@/handlers/hyprcursor';
     }));
   });
 
-  const currentDefinition = computed(() => {
-    return cursorStore.getDefinition(editorStore.selectedSize);
+  const currentCursorHotspot = computed(() => {
+    return cursorStore.getCursorHotspot;
   });
 
   const currentFrames = computed(() => {
@@ -49,9 +49,9 @@ import { hyprcursorHandler } from '@/handlers/hyprcursor';
     editorStore.selectedSize = value;
   }
 
-  function handleDefinitionUpdate(definition: Definition | undefined) {
-    if (definition) {
-      cursorStore.updateDefinition(editorStore.selectedSize, definition);
+  function handleHotspotUpdate(hotspot: CursorHotspot | undefined){
+    if(hotspot){
+      cursorStore.updateHotspot(hotspot)
     }
   }
 
@@ -79,7 +79,7 @@ import { hyprcursorHandler } from '@/handlers/hyprcursor';
       });
 
       await modal.openModal(closeConfirm);
-      controller.dispose()
+      controller.dispose();
     } catch (reason) {
       console.log('User cancelled', reason);
       return;
@@ -102,7 +102,7 @@ import { hyprcursorHandler } from '@/handlers/hyprcursor';
         </div>
         <div class="grid grid-cols-2 md:grid-cols-1 gap-3 h-full justify-items-center">
           <EditorViewer
-            :definition="currentDefinition"
+            :cursor-hotspot="currentCursorHotspot"
             :frame="currentFrame"
             :frame-number="editorStore.frame"
             :hotspot-hint="editorStore.hotspotHint"
@@ -111,7 +111,7 @@ import { hyprcursorHandler } from '@/handlers/hyprcursor';
             class="shadow-md rounded-lg"
           />
           <EditorPreview
-            :definition="currentDefinition"
+            :cursor-hotspot="currentCursorHotspot"
             :frame="currentFrame"
             :dark="editorStore.dark"
             @toggle-dark="editorStore.dark = !editorStore.dark"
@@ -122,15 +122,18 @@ import { hyprcursorHandler } from '@/handlers/hyprcursor';
       <div class="gap-3 grow w-full md:w-2/3 flex flex-col">
         <div class="grow shadow-md rounded-lg bg-gray-50 dark:bg-gray-700 overflow-scroll">
           <EditorForms
-            :definition="currentDefinition"
+            :cursor-hotspot="currentCursorHotspot"
             :frames="currentFrames"
             :current-frame="editorStore.frame"
-            @update:definition="handleDefinitionUpdate"
+            @update:cursor-hotspot="handleHotspotUpdate"
             @update:hotspot-hint="editorStore.hotspotHint = $event"
           />
         </div>
         <div class="shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">
-          <EditorActions @export="exportCursor" @close="close"/>
+          <EditorActions
+            @export="exportCursor"
+            @close="close"
+          />
         </div>
       </div>
     </div>

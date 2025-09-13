@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import { onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
-  import type { Definition, Frame } from '@/lib/groove';
+  import type { CursorHotspot, Frame } from '@/lib/groove';
 
   const props = defineProps<{
-    definition: Definition | undefined;
+    cursorHotspot: CursorHotspot | undefined;
     frame: Frame | null;
     frameNumber: number;
     hotspotHint: boolean;
@@ -20,19 +20,15 @@
     const canvas = canvasRef.value;
     if (!canvas) return;
 
-    const imageSize = props.selectedSize ?? 1;
-    const xhot = props.definition?.xhot ?? 0;
-    const yhot = props.definition?.yhot ?? 0;
+    const xhot = props.cursorHotspot?.x ?? 0;
+    const yhot = props.cursorHotspot?.y ?? 0;
 
     const rect = canvas.getBoundingClientRect();
     const cssWidth = rect.width;
     const cssHeight = rect.height;
 
-    const normX = xhot / imageSize;
-    const normY = yhot / imageSize;
-
-    const screenX = normX * cssWidth;
-    const screenY = normY * cssHeight;
+    const screenX = xhot * cssWidth;
+    const screenY = yhot * cssHeight;
 
     const pixelRatioX = canvas.width / cssWidth;
     const pixelRatioY = canvas.height / cssHeight;
@@ -84,7 +80,7 @@
     }
   }
 
-  let observer: ResizeObserver;
+  let observer: ResizeObserver | null = null;
 
   onMounted(() => {
     nextTick(() => {
@@ -101,12 +97,12 @@
   });
 
   onBeforeUnmount(() => {
-    observer.disconnect();
+    observer?.disconnect();
     cancelAnimationFrame(animationFrameId);
   });
 
   watch(
-    () => [props.selectedSize, props.definition],
+    () => [props.cursorHotspot],
     () => {
       nextTick(() => {
         resizeCanvas();
@@ -144,4 +140,3 @@
 </template>
 
 <style scoped></style>
-
