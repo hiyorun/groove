@@ -1,45 +1,23 @@
-# groove
+# Groove
 
-This template should help get you started developing with Vue 3 in Vite.
+A simple cursor editor (WIP) that currently supports:  
 
-## Recommended IDE Setup
+- Single Xcursor
+- Hyprcursor
+- Windows Cursor (.cur)
+- Windows Animated Cursor (.ani)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Future plans:
 
-## Type Support for `.vue` Imports in TS
+- Support for collections of cursors as a full project  
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+Fully client-side. No data leaves your network.
 
-## Customize configuration
+## Running
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- Try online: [groove.hiyo.run](https://groove.hiyo.run)
+- Or run locally:  
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+```bash
+yarn dev    # for development
+yarn build  # to build locally
