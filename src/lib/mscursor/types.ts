@@ -1,0 +1,50 @@
+export interface CursorEntry {
+  width: number;
+  height: number;
+  colors: number;
+  reserved: number;
+  hotspotX: number;
+  hotspotY: number;
+  size: number;
+  imageOffset: number;
+  imageData: ArrayBuffer;
+}
+
+export interface CursorFile {
+  entries: CursorEntry[];
+}
+
+export enum ImageFormat {
+  BITMAP = 'bitmap',
+  PNG = 'png',
+  ICO = 'ico',
+  UNKNOWN = 'unknown',
+}
+
+export interface ImageInfo {
+  format: ImageFormat;
+  needsConversion: boolean;
+  mimeType: string;
+}
+
+export interface AniFile {
+  entries: AniEntry[];
+  defaultRate?: number;
+}
+
+export interface AniEntry extends CursorEntry {
+  rate: number;
+  sequence: number;
+}
+
+export interface AniMetadata {
+  cbSize: number,
+  nFrames: number,
+  nSteps: number,
+  iWidth: number,
+  iHeight: number,
+  iBitCount: number,
+  nPlanes: number,
+  iDispRate: number,
+  bfAttributes: number,
+}

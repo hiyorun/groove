@@ -16,6 +16,8 @@
   } from '@/components/common/ConfirmationModal.vue';
   import { useCursorController } from '@/composables/useCursorAnimation';
   import { hyprcursorHandler } from '@/handlers/hyprcursor';
+  import { mscursorHandler } from '@/handlers/mscursor';
+  import { msaniHandler } from '@/handlers/msani';
 
   const cursorStore = useCursorStore();
   const editorStore = useEditorStore();
@@ -49,9 +51,9 @@
     editorStore.selectedSize = value;
   }
 
-  function handleHotspotUpdate(hotspot: CursorHotspot | undefined){
-    if(hotspot){
-      cursorStore.updateHotspot(hotspot)
+  function handleHotspotUpdate(hotspot: CursorHotspot | undefined) {
+    if (hotspot) {
+      cursorStore.updateHotspot(hotspot);
     }
   }
 
@@ -62,6 +64,12 @@
         break;
       case 'hyprcursor':
         cursorStore.make(hyprcursorHandler);
+        break;
+      case 'mscursor':
+        cursorStore.make(mscursorHandler);
+        break;
+      case 'msani':
+        cursorStore.make(msaniHandler);
         break;
       default:
         console.log('Unimplemented');
