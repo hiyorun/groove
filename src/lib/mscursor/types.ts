@@ -18,7 +18,7 @@ export enum ImageFormat {
   BITMAP = 'bitmap',
   PNG = 'png',
   ICO = 'ico',
-  UNKNOWN = 'unknown'
+  UNKNOWN = 'unknown',
 }
 
 export interface ImageInfo {
@@ -27,4 +27,12 @@ export interface ImageInfo {
   mimeType: string;
 }
 
+export interface AniFile {
+  entries: AniEntry[];
+  defaultRate?: number;
+}
 
+export interface AniEntry extends CursorEntry {
+  rate: number;
+  sequence: number;
+}

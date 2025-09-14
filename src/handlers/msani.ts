@@ -1,46 +1,46 @@
-import type { CursorHandler, Cursor, SizeGroups, Definition } from '@/lib/groove';
+import type { CursorHandler, Cursor, SizeGroups, Frame } from '@/lib/groove';
 import { floatPrecise } from '@/lib/groove/helper';
 import {
-  cursorToImageURL,
-  identCur,
+  identAni,
   makeCur,
-  parseCur,
+  parseAni,
   pngToDIB,
   type CursorEntry,
   type CursorFile,
 } from '@/lib/mscursor';
 
-export const mscursorHandler: CursorHandler = {
+export const msaniHandler: CursorHandler = {
   async parse(file: File): Promise<Cursor> {
-    const parsed = await parseCur(file);
+    const cursor = await parseAni(file);
 
-    const largest = parsed.entries.reduce((a, b) => (a.width > b.width ? a : b));
+    const largest = cursor.entries.reduce((a, b) => (a.width > b.width ? a : b));
 
     const relXhot = floatPrecise(largest.hotspotX / largest.width);
     const relYhot = floatPrecise(largest.hotspotY / largest.height);
 
     const sizeGroups: SizeGroups = new Map();
 
-    for (const entry of parsed.entries) {
-      const url = cursorToImageURL(entry);
+    for (const entry of cursor.entries) {
+      const bytes = new Uint8Array(entry.imageData);
+      const base64 = window.btoa(String.fromCharCode(...bytes));
+      const url = `data:image/x-icon;base64,${base64}`;
 
-      const def: Definition = {
-        frames: [
-          {
-            width: entry.width,
-            height: entry.height,
-            delay: 0,
-            url: url,
-          },
-        ],
+      const frame: Frame = {
+        width: entry.width,
+        height: entry.height,
+        delay: entry.rate ?? cursor.defaultRate ?? 0,
+        url,
       };
 
-      sizeGroups.set(entry.width, def);
+      if (!sizeGroups.has(entry.width)) {
+        sizeGroups.set(entry.width, { frames: [] });
+      }
+      sizeGroups.get(entry.width)!.frames.push(frame);
     }
 
-    const name = file.name.endsWith('.cur') ? file.name.slice(0, -4) : file.name;
+    const name = file.name.endsWith('.ani') ? file.name.slice(0, -4) : file.name;
     return {
-      name: name,
+      name,
       version: 1,
       hotspot: {
         x: relXhot,
@@ -81,6 +81,6 @@ export const mscursorHandler: CursorHandler = {
     return [blob, packageName];
   },
   async ident(file: File): Promise<boolean> {
-    return await identCur(file);
+    return await identAni(file);
   },
 };

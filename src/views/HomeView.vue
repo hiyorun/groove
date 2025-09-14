@@ -18,7 +18,8 @@
 
     const file = files[0];
 
-    const handlers: CursorHandler[] = [handler.xcursor, handler.hyprcursor, handler.mscursor];
+    const handlers: CursorHandler[] = [handler.xcursor, handler.hyprcursor, handler.mscursor,
+      handler.msani];
 
     let selectedHandler: (typeof handlers)[0] | null = null;
 

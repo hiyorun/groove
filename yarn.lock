@@ -2115,6 +2115,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"byte-data@npm:^18.0.3":
+  version: 18.1.1
+  resolution: "byte-data@npm:18.1.1"
+  dependencies:
+    endianness: "npm:^8.0.2"
+    ieee754-buffer: "npm:^2.0.0"
+    utf8-buffer: "npm:^1.0.0"
+  checksum: 10c0/f7dc7e7b160266765faaaf7486bfda9d334c987326d08c60ce45bc24149acd06d90285548d669bd15417ec7e88147de55abdde68ae5bf64cd0861f7ae9608f98
+  languageName: node
+  linkType: hard
+
+"byte-data@npm:^19.0.1":
+  version: 19.0.1
+  resolution: "byte-data@npm:19.0.1"
+  checksum: 10c0/c0bdbf1fae07fde3bfe7d9fe527e2808c3a085339d96198a9e9320d700a1262e3921b180a2856cb3ad674aae3f89c9b2c205f530882e02e14cac284c1ea7ff9c
+  languageName: node
+  linkType: hard
+
 "cac@npm:^6.7.14":
   version: 6.7.14
   resolution: "cac@npm:6.7.14"
@@ -2422,6 +2440,13 @@ __metadata:
   dependencies:
     iconv-lite: "npm:^0.6.2"
   checksum: 10c0/36d938712ff00fe1f4bac88b43bcffb5930c1efa57bbcdca9d67e1d9d6c57cfb1200fb01efe0f3109b2ce99b231f90779532814a81370a1bd3274a0f58585039
+  languageName: node
+  linkType: hard
+
+"endianness@npm:^8.0.2":
+  version: 8.0.2
+  resolution: "endianness@npm:8.0.2"
+  checksum: 10c0/fa9fa8f115aec8c5943cca772dea1d2371ed1e7a9e0a3efcbe48a6cd207c9de68506629e4234c274275d1469ef031a7fec3662385f1efd1ca432229b239a41dd
   languageName: node
   linkType: hard
 
@@ -3084,6 +3109,7 @@ __metadata:
     "@vue/test-utils": "npm:^2.4.6"
     "@vue/tsconfig": "npm:^0.7.0"
     buffer: "npm:^6.0.3"
+    byte-data: "npm:^19.0.1"
     eslint: "npm:^9.31.0"
     eslint-plugin-better-tailwindcss: "npm:^3.7.4"
     eslint-plugin-vue: "npm:~10.3.0"
@@ -3093,10 +3119,12 @@ __metadata:
     jszip: "npm:^3.10.1"
     npm-run-all2: "npm:^8.0.4"
     pinia: "npm:^3.0.3"
+    pngjs: "npm:^7.0.0"
     postcss: "npm:^8.5.6"
     prettier: "npm:3.6.2"
     prettier-plugin-classnames: "npm:^0.8.2"
     prettier-plugin-tailwindcss: "npm:^0.6.14"
+    riff-file: "npm:^1.0.3"
     tailwindcss: "npm:^4.1.11"
     typescript: "npm:~5.8.0"
     vite: "npm:^7.0.6"
@@ -3190,6 +3218,13 @@ __metadata:
   dependencies:
     safer-buffer: "npm:>= 2.1.2 < 3.0.0"
   checksum: 10c0/98102bc66b33fcf5ac044099d1257ba0b7ad5e3ccd3221f34dd508ab4070edff183276221684e1e0555b145fce0850c9f7d2b60a9fcac50fbb4ea0d6e845a3b1
+  languageName: node
+  linkType: hard
+
+"ieee754-buffer@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "ieee754-buffer@npm:2.0.0"
+  checksum: 10c0/5777cea334f8516db1337de3d640a0d8ba54c4333b76c12b4007c9b3b0824193f28f23f249dcfb70f06d540ad681ce9aabb144886f351fac1ea4984699205574
   languageName: node
   linkType: hard
 
@@ -4295,6 +4330,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"pngjs@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "pngjs@npm:7.0.0"
+  checksum: 10c0/0d4c7a0fd476a9c33df7d0a2a73e1d56537628a668841f6995c2bca070cf30819f9254a64363266bc14ef2fee47659dd3b4f2b18eec7ab65143015139f497b38
+  languageName: node
+  linkType: hard
+
 "postcss-import@npm:^16.1.1":
   version: 16.1.1
   resolution: "postcss-import@npm:16.1.1"
@@ -4582,6 +4624,15 @@ __metadata:
   version: 1.4.1
   resolution: "rfdc@npm:1.4.1"
   checksum: 10c0/4614e4292356cafade0b6031527eea9bc90f2372a22c012313be1dcc69a3b90c7338158b414539be863fa95bfcb2ddcd0587be696841af4e6679d85e62c060c7
+  languageName: node
+  linkType: hard
+
+"riff-file@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "riff-file@npm:1.0.3"
+  dependencies:
+    byte-data: "npm:^18.0.3"
+  checksum: 10c0/b1c15851a3a3b94609d82d401534bb1fdbda5a1f2b40178ee3a6ec8c2f9a61ccdb72bb4c642d8af4aa26f225cd7475b461f05b0a34d56ed5dc9cbed51547954a
   languageName: node
   linkType: hard
 
@@ -5255,6 +5306,13 @@ __metadata:
   dependencies:
     punycode: "npm:^2.1.0"
   checksum: 10c0/4ef57b45aa820d7ac6496e9208559986c665e49447cb072744c13b66925a362d96dd5a46c4530a6b8e203e5db5fe849369444440cb22ecfc26c679359e5dfa3c
+  languageName: node
+  linkType: hard
+
+"utf8-buffer@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "utf8-buffer@npm:1.0.0"
+  checksum: 10c0/3cf47ba9ba9ca756734bbe3b139adf04c0e1419e36ecdeebfc930ae702c0b15042225cd483b9d933600353822201e0db3640e1206829823062a5accee0821027
   languageName: node
   linkType: hard
 
