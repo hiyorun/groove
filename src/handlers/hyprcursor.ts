@@ -40,8 +40,8 @@ export const hyprcursorHandler: CursorHandler = {
   },
   async make(cursor: Cursor): Promise<[Blob, string]> {
     const hyprCursor: HyprCursor = {
-      hotspot_x: 0,
-      hotspot_y: 0,
+      hotspot_x: Math.round(cursor.hotspot.x * 100) / 100,
+      hotspot_y: Math.round(cursor.hotspot.y * 100) / 100,
       nominal_size: 1,
       resize_algorithm: 'none',
       define_override: [],

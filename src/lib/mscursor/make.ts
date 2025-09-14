@@ -1,4 +1,4 @@
-import type { CursorFile } from "./types";
+import type { CursorFile } from './types';
 
 export function makeCur(cursor: CursorFile): ArrayBuffer {
   if (!Array.isArray(cursor.entries) || cursor.entries.length === 0) {
@@ -48,4 +48,3 @@ export function makeCur(cursor: CursorFile): ArrayBuffer {
 
   return buffer;
 }
-

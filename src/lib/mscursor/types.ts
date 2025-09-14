@@ -36,3 +36,15 @@ export interface AniEntry extends CursorEntry {
   rate: number;
   sequence: number;
 }
+
+export interface AniMetadata {
+  cbSize: number,
+  nFrames: number,
+  nSteps: number,
+  iWidth: number,
+  iHeight: number,
+  iBitCount: number,
+  nPlanes: number,
+  iDispRate: number,
+  bfAttributes: number,
+}
