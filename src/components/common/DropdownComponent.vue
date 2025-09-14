@@ -148,9 +148,10 @@
         >
           <button
             @click="selectOption(option)"
-            class="w-full flex gap-2 items-center px-4 py-2 hover:bg-gray-100
+            class="w-full flex gap-2 text-left px-4 py-2 hover:bg-gray-100
               dark:hover:bg-gray-600"
             :class="{
+              'cursor-pointer': !option.disabled,
               'bg-gray-100 dark:bg-gray-600': idx === focusIndex,
               'opacity-50 cursor-not-allowed': option.disabled,
             }"

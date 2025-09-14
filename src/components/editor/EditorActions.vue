@@ -2,6 +2,10 @@
   import DropdownComponent from '../common/DropdownComponent.vue';
   import InputButton from '../input/InputButton.vue';
 
+  defineProps<{
+    frameLength: number;
+  }>();
+
   const emits = defineEmits<{
     (e: 'export', value: string): void;
     (e: 'close'): void;
@@ -16,7 +20,7 @@
   }
 </script>
 <template>
-  <div class="p-3 flex justify-end gap-2">
+  <div class="p-3 flex justify-end items-center gap-2">
     <InputButton
       @click="emits('close')"
       label="Close"
@@ -35,6 +39,7 @@
         {
           name: 'Windows Cursor Format',
           value: 'mscursor',
+          disabled: frameLength > 1
         },
         {
           name: 'Windows Animated Cursor Format',

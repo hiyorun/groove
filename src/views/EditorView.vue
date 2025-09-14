@@ -95,7 +95,7 @@
   }
 </script>
 <template>
-  <div class="w-full h-full">
+  <div class="w-full h-full p-3">
     <div class="flex flex-col md:flex-row gap-3 w-full h-full">
       <div class="flex flex-col">
         <div
@@ -139,6 +139,7 @@
         </div>
         <div class="shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">
           <EditorActions
+            :frame-length="currentFrames.length"
             @export="exportCursor"
             @close="close"
           />

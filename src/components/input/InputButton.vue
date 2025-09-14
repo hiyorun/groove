@@ -3,10 +3,12 @@
     label = '',
     filled = false,
     disabled = false,
+    ghost = false,
   } = defineProps<{
     label?: string;
     filled?: boolean;
     disabled?: boolean;
+    ghost?: boolean;
   }>();
 
   const emits = defineEmits<{
@@ -26,8 +28,9 @@
     :class="{
       'bg-blue-700 text-white hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-700':
         filled && !disabled,
-      [`border border-gray-300 bg-white text-gray-900 hover:bg-gray-100 dark:border-gray-600
-      dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700`]: !filled && !disabled,
+      [`dark:bg-gray-800 bg-white text-gray-900 hover:bg-gray-100 dark:text-white
+      dark:hover:bg-gray-700`]: !filled && !disabled,
+      'border border-gray-300 dark:border-gray-600': !ghost,
       'cursor-not-allowed bg-gray-400 text-gray-200 dark:bg-gray-500 dark:text-gray-300': disabled,
       'cursor-pointer ': !disabled,
     }"

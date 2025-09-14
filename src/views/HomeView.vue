@@ -18,8 +18,12 @@
 
     const file = files[0];
 
-    const handlers: CursorHandler[] = [handler.xcursor, handler.hyprcursor, handler.mscursor,
-      handler.msani];
+    const handlers: CursorHandler[] = [
+      handler.xcursor,
+      handler.hyprcursor,
+      handler.mscursor,
+      handler.msani,
+    ];
 
     let selectedHandler: (typeof handlers)[0] | null = null;
 
@@ -54,7 +58,18 @@
   }
 </script>
 <template>
-  <div>
-    <InputFileDrop @change="upload" />
+  <div class="flex flex-col gap-3 w-full h-full">
+    <div class="pt-3 px-5">
+      <h1 class="text-xl font-bold">Groove</h1>
+    </div>
+    <div class="flex flex-grow px-3 pb-3">
+      <div class="flex-grow shadow-md rounded-lg p-3 bg-gray-50 dark:bg-gray-700">
+        <InputFileDrop
+          :title="'Drop your cursor here'"
+          :accept-badge="['Hyprcursor', 'Xcursor', 'Windows Animated Cursor', 'Windows Cursor']"
+          @change="upload"
+        />
+      </div>
+    </div>
   </div>
 </template>
