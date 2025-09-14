@@ -1,6 +1,6 @@
 import type { CursorHandler, Cursor, SizeGroups, Definition } from '@/lib/groove';
 import { floatPrecise } from '@/lib/groove/helper';
-import { CursorImageConverter, identCur, parseCur } from '@/lib/mscursor';
+import { cursorToImageURL, identCur, makeCur, parseCur, pngToDIB, type CursorEntry, type CursorFile } from '@/lib/mscursor';
 
 export const mscursorHandler: CursorHandler = {
   async parse(file: File): Promise<Cursor> {
@@ -12,10 +12,9 @@ export const mscursorHandler: CursorHandler = {
     const relYhot = floatPrecise(largest.hotspotY / largest.height);
 
     const sizeGroups: SizeGroups = new Map();
-    const assetConvert = new CursorImageConverter();
 
     for (const entry of parsed.entries) {
-      const url = assetConvert.cursorToImageURL(entry);
+      const url = cursorToImageURL(entry);
 
       const def: Definition = {
         frames: [
@@ -43,9 +42,36 @@ export const mscursorHandler: CursorHandler = {
     };
   },
   async make(cursor: Cursor): Promise<[Blob, string]> {
-    console.log('Unimplemented!', cursor);
-    const file = new File([], '');
-    return [file, ''];
+    const mscursor: CursorFile = {
+      entries: []
+    };
+
+
+    for (const [size, definition] of cursor.sizes.entries()) {
+      for (const frame of definition.frames) {
+        const response = await fetch(frame.url);
+        const buffer = await response.arrayBuffer();
+
+        const entry: CursorEntry = {
+          width: size,
+          height: size,
+          colors: 0,
+          reserved: 0,
+          hotspotX: cursor.hotspot.x,
+          hotspotY: cursor.hotspot.y,
+          size: buffer.byteLength,
+          imageOffset: 0,
+          imageData: await pngToDIB(buffer),
+        };
+
+        mscursor.entries.push(entry);
+      }
+    }
+
+    const buffer = makeCur(mscursor);
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const packageName = cursor.name.endsWith('.cur') ? cursor.name : `${cursor.name}.cur`;
+    return [blob, packageName];
   },
   async ident(file: File): Promise<boolean> {
     return await identCur(file);

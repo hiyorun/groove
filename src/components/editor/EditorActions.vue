@@ -32,6 +32,10 @@
           name: 'Hyprcursor',
           value: 'hyprcursor',
         },
+        {
+          name: 'Windows Cursor Format',
+          value: 'mscursor',
+        },
       ]"
     >
       <template #dropdown-toggle>
