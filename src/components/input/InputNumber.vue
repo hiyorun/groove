@@ -16,7 +16,7 @@
   const value = defineModel<number>({ default: 0 });
 
   const _inputID = ref<string>(crypto.randomUUID());
-  let focusTimer: number = 0;
+  let focusTimer: ReturnType<typeof setTimeout> | null = null;
 
   const emits = defineEmits<{
     focus: [val: boolean];
@@ -27,7 +27,10 @@
   }
 
   function buttonModifier(op: 'add' | 'sub') {
-    clearTimeout(focusTimer);
+    if(focusTimer){
+      clearTimeout(focusTimer);
+      focusTimer = null
+    }
     if (op === 'add') {
       value.value++;
     } else {
