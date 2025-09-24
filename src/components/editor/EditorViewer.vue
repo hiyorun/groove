@@ -114,26 +114,23 @@
 
 <template>
   <div
-    class="w-full h-full p-3 flex flex-col"
+    class="w-full p-3 flex flex-col"
     :class="{
       'bg-white text-gray-900': !dark,
       'bg-gray-900 text-white': dark,
     }"
   >
     <span>Frame: {{ frameNumber }}</span>
-    <div
-      class="h-full w-full relative"
-      ref="containerRef"
-    >
+    <div class="relative w-full aspect-square">
       <img
         v-if="frame"
-        class="max-w-full max-h-full min-h-28 w-full md:w-auto md:h-full object-contain pixel"
         :src="frame.url"
+        class="absolute inset-0 w-full h-full pixel"
       />
       <canvas
         ref="canvasRef"
         :class="{ hidden: !hotspotHint }"
-        class="absolute top-0 left-0 w-full h-full pointer-events-none object-contain pixel"
+        class="absolute inset-0 w-full h-full pointer-events-none object-contain pixel"
       />
     </div>
   </div>
