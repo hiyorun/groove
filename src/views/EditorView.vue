@@ -108,7 +108,7 @@
             @change="changeSizeGroup"
           />
         </div>
-        <div class="grid grid-cols-2 md:grid-cols-1 gap-3 h-full justify-items-center">
+        <div class="flex md:flex-col gap-3 h-full justify-items-center">
           <EditorViewer
             :cursor-hotspot="currentCursorHotspot"
             :frame="currentFrame"
