@@ -6,7 +6,7 @@ import { useEditorStore } from '@/stores/editorStore';
 const editorStore = useEditorStore();
 </script>
 <template>
-  <div class="w-screen h-screen">
+  <div class="w-full h-full">
     <HomeView v-if="!editorStore.ready" />
     <EditorView v-else />
   </div>

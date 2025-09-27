@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <main class="relative">
+  <main class="relative w-full h-full">
     <ModalComponent />
     <MainView />
   </main>

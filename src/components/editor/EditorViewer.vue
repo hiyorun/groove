@@ -114,7 +114,7 @@
 
 <template>
   <div
-    class="max-h-full w-full max-w-1/2 md:max-w-72 p-3 flex justify-center items-center"
+    class="h-full max-w-1/2 aspect-square p-3 flex justify-center items-center"
     :class="{
       'bg-white text-gray-900': !dark,
       'bg-gray-900 text-white': dark,

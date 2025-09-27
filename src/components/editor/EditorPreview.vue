@@ -17,7 +17,7 @@ const emits = defineEmits<{
     v-if="frame"
     :class="{ 'bg-white text-gray-900': !props.dark, 'bg-gray-900 text-white': props.dark }"
     :style="`cursor: url(${props.frame?.url}) ${ props.cursorHotspot ? props.cursorHotspot.x * frame.width : 0 } ${props.cursorHotspot ? props.cursorHotspot.y * frame.height : 0 }, pointer`"
-    class="w-full h-full p-2 flex flex-col gap-2 relative"
+    class="w-full p-2 flex flex-col gap-2 relative"
   >
     <button
       @click="emits('toggleDark', !dark)"

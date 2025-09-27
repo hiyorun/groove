@@ -132,9 +132,9 @@
 <template>
   <div class="w-full h-full p-3">
     <div class="flex flex-col gap-3 w-full h-full">
-      <div class="flex flex-col grow">
+      <div class="gap-3 w-full h-full flex flex-col">
         <div
-          class="flex justify-between items-baseline p-3 mb-3 gap-3 shadow-md rounded-lg bg-gray-50
+          class="flex justify-between items-baseline p-3 gap-3 shadow-md rounded-lg bg-gray-50
             dark:bg-gray-700"
         >
           Size:
@@ -143,7 +143,7 @@
             v-model.number="editorStore.selectedSize"
           />
         </div>
-        <div class="flex gap-3 h-full justify-items-center">
+        <div class="grow flex gap-3">
           <EditorViewer
             :cursor-hotspot="currentCursorHotspot"
             :frame="currentFrame"
@@ -161,9 +161,7 @@
             class="shadow-md rounded-lg"
           />
         </div>
-      </div>
-      <div class="gap-3 w-full flex flex-col">
-        <div class="grow shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">
+        <div class="shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">
           <EditorForms
             :cursor-hotspot="currentCursorHotspot"
             :frames="currentFrames"
