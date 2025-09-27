@@ -45,12 +45,6 @@
     return currentFrames.value[editorStore.frame] ?? null;
   });
 
-  function changeSizeGroup(evt: Event) {
-    const target = evt.target as HTMLSelectElement;
-    const value = parseInt(target.value);
-    editorStore.selectedSize = value;
-  }
-
   function handleHotspotUpdate(hotspot: CursorHotspot | undefined) {
     if (hotspot) {
       cursorStore.updateHotspot(hotspot);
@@ -105,7 +99,7 @@
           Size:
           <InputSelect
             :options="sizeTab"
-            @change="changeSizeGroup"
+            v-model.number="editorStore.selectedSize"
           />
         </div>
         <div class="flex gap-3 h-full justify-items-center">
