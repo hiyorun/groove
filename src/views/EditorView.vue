@@ -119,6 +119,15 @@
   }
 
   const debouncedControlAction = useDebounce((act: PlayerActions) => controlAction(act), 10);
+
+  function setUnifiedDelay(val: boolean | undefined) {
+    cursorStore.setUnifiedDelay(editorStore.selectedSize, !!val);
+  }
+
+  function setUnifiedDelayTime(val: number | undefined) {
+    if (!val) return;
+    cursorStore.setUnifiedDelayTime(editorStore.selectedSize, val);
+  }
 </script>
 <template>
   <div class="w-full h-full p-3">
@@ -154,21 +163,25 @@
         </div>
       </div>
       <div class="gap-3 w-full flex flex-col">
+        <div class="grow shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">
+          <EditorForms
+            :cursor-hotspot="currentCursorHotspot"
+            :frames="currentFrames"
+            :current-frame="editorStore.frame"
+            :unified-delay="cursorStore.getUnifiedDelay(editorStore.selectedSize)"
+            @update:unified-delay="setUnifiedDelay"
+            :unified-delay-time="cursorStore.getUnifiedDelayTime(editorStore.selectedSize)"
+            @update:unified-delay-time="setUnifiedDelayTime"
+            @update:cursor-hotspot="handleHotspotUpdate"
+            @update:hotspot-hint="editorStore.hotspotHint = $event"
+          />
+        </div>
         <div class="shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">
           <EditorControls
             :frame-count="currentFrames.length"
             :is-playing="!editorStore.paused"
             v-model:current-frame="editorStore.frame"
             @action="debouncedControlAction"
-          />
-        </div>
-        <div class="grow shadow-md rounded-lg bg-gray-50 dark:bg-gray-700 overflow-scroll">
-          <EditorForms
-            :cursor-hotspot="currentCursorHotspot"
-            :frames="currentFrames"
-            :current-frame="editorStore.frame"
-            @update:cursor-hotspot="handleHotspotUpdate"
-            @update:hotspot-hint="editorStore.hotspotHint = $event"
           />
         </div>
         <div class="shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">

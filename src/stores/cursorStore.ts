@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { Cursor, CursorHandler, Frame, Definition, CursorHotspot } from '@/lib/groove';
 import { parseCursorFile, makeCursorFile, identCursorFile } from '@/handlers/cursor';
+import { findMode } from '@/composables/useMode';
 
 export const useCursorStore = defineStore('cursor', () => {
   const cursor = ref<Cursor | undefined>();
@@ -94,6 +95,37 @@ export const useCursorStore = defineStore('cursor', () => {
     }
   }
 
+  function setUnifiedDelay(size: number, val: boolean) {
+    const definition = cursor.value?.sizes.get(size);
+    if (!definition) return;
+    if (!definition.unifiedDelay) {
+      const delays = definition.frames.map((frame: Frame) => frame.delay);
+      const commons = findMode(delays);
+      definition.unifiedDelay = Math.min(...commons);
+    }
+    definition.useUnifiedDelay = val;
+    cursor.value?.sizes.set(size, definition);
+  }
+
+  function getUnifiedDelay(size: number): boolean {
+    const val = cursor.value?.sizes.get(size);
+    if (!val) return false;
+    return !!val.useUnifiedDelay;
+  }
+
+  function getUnifiedDelayTime(size: number): number {
+    const val = cursor.value?.sizes.get(size);
+    if (!val) return 0;
+    return val.unifiedDelay || 0;
+  }
+
+  function setUnifiedDelayTime(size: number, val: number) {
+    const definition = cursor.value?.sizes.get(size);
+    if (!definition) return;
+    definition.unifiedDelay = val;
+    cursor.value?.sizes.set(size, definition);
+  }
+
   return {
     ready,
     sizes,
@@ -108,5 +140,9 @@ export const useCursorStore = defineStore('cursor', () => {
     make,
     ident,
     reset,
+    setUnifiedDelay,
+    getUnifiedDelay,
+    getUnifiedDelayTime,
+    setUnifiedDelayTime,
   };
 });

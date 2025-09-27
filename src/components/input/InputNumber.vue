@@ -1,16 +1,18 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
 
   const {
     label = '',
     helper = '',
     placeholder = '',
     required = false,
+    disabled = false,
   } = defineProps<{
     label?: string;
     helper?: string;
     placeholder?: string;
     required?: boolean;
+    disabled?: boolean;
   }>();
 
   const value = defineModel<number>({ default: 0 });
@@ -27,9 +29,10 @@
   }
 
   function buttonModifier(op: 'add' | 'sub') {
-    if(focusTimer){
+    if (disabled) return;
+    if (focusTimer) {
       clearTimeout(focusTimer);
-      focusTimer = null
+      focusTimer = null;
     }
     if (op === 'add') {
       value.value++;
@@ -41,7 +44,18 @@
       emits('focus', false);
     }, 3000);
   }
+
+  const wrapperClasses = computed(() => {
+    return [
+      'relative flex w-full items-center overflow-hidden',
+      disabled
+        ? 'border border-gray-200 dark:border-gray-600 bg-gray-200 dark:bg-gray-600 text-gray-500 dark:text-gray-300 cursor-not-allowed'
+        : 'bg-gray-50 border border-gray-300 [&:has(input:focus)]:ring-blue-500 [&:has(input:focus)]:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-500 dark:focus:border-blue-500 text-gray-900 dark:text-white',
+      'text-sm rounded-md',
+    ];
+  });
 </script>
+
 <template>
   <div class="w-full">
     <label
@@ -50,13 +64,7 @@
       class="mb-1 block text-sm font-medium text-gray-900 dark:text-white"
       >{{ label }}</label
     >
-    <div
-      class="relative flex w-full items-center overflow-hidden bg-gray-50 border border-gray-300
-        text-gray-900 text-sm rounded-md [&:has(input:focus)]:ring-blue-500
-        [&:has(input:focus)]:border-blue-500 dark:bg-gray-700 dark:border-gray-600
-        dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-        dark:focus:border-blue-500"
-    >
+    <div :class="wrapperClasses">
       <input
         @focusin="emits('focus', true)"
         @focusout="emits('focus', false)"
@@ -67,13 +75,16 @@
         :placeholder="placeholder"
         :required="required"
         v-model.number="value"
+        :disabled="disabled"
       />
       <button
         @click="buttonModifier('sub')"
         :id="unique('decrement-button')"
         type="button"
-        class="cursor-pointer self-stretch bg-gray-100 p-2 hover:bg-gray-200 dark:bg-gray-600
+        class="self-stretch bg-gray-100 p-2 hover:bg-gray-200 dark:bg-gray-600
           dark:hover:bg-gray-800"
+        :class="{ 'cursor-not-allowed opacity-50': disabled }"
+        :disabled="disabled"
       >
         <svg
           class="h-3 w-3 text-gray-900 dark:text-white"
@@ -96,8 +107,10 @@
         @click="buttonModifier('add')"
         :id="unique('increment-button')"
         type="button"
-        class="cursor-pointer self-stretch bg-gray-100 p-2 hover:bg-gray-200 dark:bg-gray-600
+        class="self-stretch bg-gray-100 p-2 hover:bg-gray-200 dark:bg-gray-600
           dark:hover:bg-gray-800"
+        :class="{ 'cursor-not-allowed opacity-50': disabled }"
+        :disabled="disabled"
       >
         <svg
           class="h-3 w-3 text-gray-900 dark:text-white"

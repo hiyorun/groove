@@ -17,15 +17,21 @@ export function useCursorController() {
   function tick() {
     if (editorStore.paused) return;
 
+    let delay: number;
     const frames = cursorStore.getFrames(editorStore.selectedSize);
 
-    if (frames.length <= 1) {
-      editorStore.frame = 0;
-      return;
-    }
+    // NOTE: THIS WHOLE FIASCO IS FCKING EXPENSIVE. NEED REFACTOR LATER LOL.
+    if (cursorStore.getUnifiedDelay(editorStore.selectedSize)) {
+      delay = Math.max(1, cursorStore.getUnifiedDelayTime(editorStore.selectedSize) || 0);
+    } else {
+      if (frames.length <= 1) {
+        editorStore.frame = 0;
+        return;
+      }
 
-    const frame = frames[editorStore.frame] ?? frames[0];
-    const delay = Math.max(1, frame.delay || 0);
+      const frame = frames[editorStore.frame] ?? frames[0];
+      delay = Math.max(1, frame.delay || 0);
+    }
 
     timer = setTimeout(() => {
       if (editorStore.paused) {

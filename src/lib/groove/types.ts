@@ -21,6 +21,8 @@ export type SizeGroups = Map<number, Definition>;
 
 export type Definition = {
   frames: Frame[];
+  useUnifiedDelay?: boolean;
+  unifiedDelay?: number;
 };
 
 export type FrameMetadata = {
