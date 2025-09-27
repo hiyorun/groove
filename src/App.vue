@@ -4,7 +4,7 @@
 </script>
 
 <template>
-  <main class="bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-50 relative">
+  <main class="relative">
     <ModalComponent />
     <MainView />
   </main>

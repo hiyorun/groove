@@ -96,8 +96,8 @@
 </script>
 <template>
   <div class="w-full h-full p-3">
-    <div class="flex flex-col md:flex-row gap-3 w-full h-full">
-      <div class="flex flex-col">
+    <div class="flex flex-col gap-3 w-full h-full">
+      <div class="flex flex-col grow">
         <div
           class="flex justify-between items-baseline p-3 mb-3 gap-3 shadow-md rounded-lg bg-gray-50
             dark:bg-gray-700"
@@ -108,7 +108,7 @@
             @change="changeSizeGroup"
           />
         </div>
-        <div class="flex md:flex-col gap-3 h-full justify-items-center">
+        <div class="flex gap-3 h-full justify-items-center">
           <EditorViewer
             :cursor-hotspot="currentCursorHotspot"
             :frame="currentFrame"
@@ -127,7 +127,7 @@
           />
         </div>
       </div>
-      <div class="gap-3 grow w-full md:w-2/3 flex flex-col">
+      <div class="gap-3 w-full flex flex-col">
         <div class="grow shadow-md rounded-lg bg-gray-50 dark:bg-gray-700 overflow-scroll">
           <EditorForms
             :cursor-hotspot="currentCursorHotspot"

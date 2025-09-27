@@ -38,8 +38,8 @@
     const opacity = (Math.sin(time / 100) + 1) / 2;
 
     const minDim = Math.min(canvas.width, canvas.height);
-    const crosshairSize = Math.max(50, Math.min(20, minDim * 0.1));
-    const lineWidth = Math.max(1, minDim * 0.01);
+    const crosshairSize = Math.max(100, Math.min(20, minDim * 0.1));
+    const lineWidth = Math.max(5, minDim * 0.01);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.strokeStyle = `rgba(255, 0, 0, ${opacity})`;
@@ -114,23 +114,22 @@
 
 <template>
   <div
-    class="w-full p-3 flex flex-col"
+    class="max-h-full w-full max-w-1/2 md:max-w-72 p-3 flex justify-center items-center"
     :class="{
       'bg-white text-gray-900': !dark,
       'bg-gray-900 text-white': dark,
     }"
   >
-    <span>Frame: {{ frameNumber }}</span>
-    <div class="relative w-full aspect-square">
+    <div class="relative w-full">
       <img
         v-if="frame"
         :src="frame.url"
-        class="absolute inset-0 w-full h-full pixel"
+        class="w-full pixel"
       />
       <canvas
         ref="canvasRef"
         :class="{ hidden: !hotspotHint }"
-        class="absolute inset-0 w-full h-full pointer-events-none object-contain pixel"
+        class="absolute inset-0 w-full pointer-events-none object-contain pixel"
       />
     </div>
   </div>

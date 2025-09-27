@@ -16,8 +16,8 @@
 <template>
   <div class="flex flex-col relative">
     <div
-      class="sticky z-10 top-0 left-0 shadow-md bg-gray-50 dark:bg-gray-700 p-3 grid grid-cols-1
-        sm:grid-cols-2 gap-3"
+      class="sticky z-10 top-0 left-0 shadow-md bg-gray-50 dark:bg-gray-700 p-3 grid grid-cols-2
+        sm:grid-cols-4 gap-3"
     >
       <InputNumber
         :label="'X Hotspot'"
@@ -48,15 +48,12 @@
         @focus="emit('update:hotspotHint', $event)"
       />
     </div>
-    <div
-      class="p-3 grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 2xl:grid-cols-8
-        gap-2"
-    >
+    <div class="p-3 flex flex-nowrap overflow-x-scroll gap-2">
       <div
         :key="index"
         v-for="(frame, index) in frames"
         :class="currentFrame === index ? 'border-blue-500' : 'border-transparent'"
-        class="relative flex flex-col gap-2 items-center rounded-lg p-1 border-1 shadow-lg
+        class="relative shrink-0 w-32 flex flex-col gap-2 items-center rounded-lg p-1 border-1 shadow-lg
           bg-gray-50 dark:bg-gray-700 hover:bg-gray-300 hover:dark:bg-gray-500"
       >
         <div class="flex justify-between self-stretch pl-2">
