@@ -24,6 +24,7 @@
     <InputButton
       @click="emits('close')"
       label="Close"
+      outlined
     />
     <DropdownComponent
       @change="onAction"
@@ -39,7 +40,7 @@
         {
           name: 'Windows Cursor Format',
           value: 'mscursor',
-          disabled: frameLength > 1
+          disabled: frameLength > 1,
         },
         {
           name: 'Windows Animated Cursor Format',
@@ -48,10 +49,7 @@
       ]"
     >
       <template #dropdown-toggle>
-        <InputButton
-          filled
-          label="Export"
-        />
+        <InputButton label="Export" />
       </template>
     </DropdownComponent>
   </div>

@@ -66,9 +66,9 @@
   function getTabClasses(tab: string, index: number, total: number): string[] {
     const isActive = tab === props.modelValue;
     return [
-      'inline-block w-full p-1 focus:ring-1 focus:ring-blue-300 focus:outline-none transition duration-150 ease-in-out',
+      'inline-block w-full p-1 focus:ring-1 focus:ring-blue-500 focus:outline-none transition duration-150 ease-in-out',
       isActive
-        ? 'bg-blue-700 text-white dark:bg-blue-600 cursor-default'
+        ? 'bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-black dark:hover:bg-gray-200'
         : 'bg-white hover:text-gray-900 hover:bg-gray-50 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-500',
       index < total - 1 ? 'border-r border-gray-200 dark:border-gray-700' : '',
       index === 0 ? 'rounded-s-lg' : '',
