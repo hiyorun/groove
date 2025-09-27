@@ -12,7 +12,7 @@
   <Teleport to="body">
     <div
       v-if="modalStore.show && modalStore.activeModal"
-      class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+      class="fixed inset-0 z-50 w-screen h-screen flex items-center justify-center bg-black/50"
       @click.self="closeModal"
     >
       <component

@@ -84,7 +84,7 @@
             currentFrame === index ? 'border-blue-500' : 'border-transparent',
             unifiedDelay ? 'pb-3' : '',
           ]"
-          class="relative shrink-0 w-32 flex flex-col gap-2 items-center rounded-lg p-1 border-1
+          class="relative shrink-0 w-32 flex flex-col gap-2 items-center rounded-lg p-1 border-2
             shadow-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-300 hover:dark:bg-gray-500"
         >
           <div class="flex justify-between self-stretch pl-2">
