@@ -113,6 +113,7 @@
         editorStore.nextFrame(currentFrames.value.length);
         break;
       case 'last':
+        controller.pauseFrameCounter();
         editorStore.frame = currentFrames.value.length - 1;
         break;
     }
