@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import InputFileDrop from '@/components/input/InputFileDrop.vue';
-  import { useCursorController } from '@/composables/useCursorAnimation';
+  import { useCursorController } from '@/composables/useCursorController';
   import { handler } from '@/handlers';
   import type { CursorHandler } from '@/lib/groove';
   import { useCursorStore } from '@/stores/cursorStore';

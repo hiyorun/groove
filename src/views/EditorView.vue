@@ -14,7 +14,7 @@
   import ConfirmationModal, {
     type ConfirmationModalProps,
   } from '@/components/common/ConfirmationModal.vue';
-  import { useCursorController } from '@/composables/useCursorAnimation';
+  import { useCursorController } from '@/composables/useCursorController';
   import { hyprcursorHandler } from '@/handlers/hyprcursor';
   import { mscursorHandler } from '@/handlers/mscursor';
   import { msaniHandler } from '@/handlers/msani';
