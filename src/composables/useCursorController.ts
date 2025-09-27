@@ -15,6 +15,8 @@ export function useCursorController() {
   }
 
   function tick() {
+    if (editorStore.paused) return;
+
     const frames = cursorStore.getFrames(editorStore.selectedSize);
 
     if (frames.length <= 1) {
@@ -26,18 +28,37 @@ export function useCursorController() {
     const delay = Math.max(1, frame.delay || 0);
 
     timer = setTimeout(() => {
+      if (editorStore.paused) {
+        timer = null;
+        return;
+      }
       editorStore.nextFrame(frames.length);
       tick();
     }, delay);
   }
 
+  function pauseFrameCounter() {
+    editorStore.paused = true;
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+  }
+
+  function resumeFrameCounter() {
+    if (editorStore.paused) {
+      editorStore.paused = false;
+      tick();
+    }
+  }
+
   function startFrameCounter() {
     clearFrameCounter();
+    editorStore.paused = false;
     tick();
   }
 
   function dispose() {
-    console.log("Disposing")
     clearFrameCounter();
     cursorStore.clear();
     editorStore.reset();
@@ -45,8 +66,9 @@ export function useCursorController() {
 
   return {
     startFrameCounter,
+    pauseFrameCounter,
+    resumeFrameCounter,
     clearFrameCounter,
     dispose,
   };
 }
-

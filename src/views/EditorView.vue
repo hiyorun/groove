@@ -18,6 +18,8 @@
   import { hyprcursorHandler } from '@/handlers/hyprcursor';
   import { mscursorHandler } from '@/handlers/mscursor';
   import { msaniHandler } from '@/handlers/msani';
+  import EditorControls, { type PlayerActions } from '@/components/editor/EditorControls.vue';
+  import { useDebounce } from '@/composables/useDebounce';
 
   const cursorStore = useCursorStore();
   const editorStore = useEditorStore();
@@ -87,6 +89,36 @@
       return;
     }
   }
+
+  function controlAction(act: PlayerActions) {
+    console.log(act, editorStore.frame);
+    switch (act) {
+      case 'first':
+        controller.pauseFrameCounter();
+        editorStore.frame = 0;
+        break;
+      case 'prev':
+        controller.pauseFrameCounter();
+        editorStore.prevFrame(currentFrames.value.length);
+        break;
+      case 'toggle':
+        if (!editorStore.paused) {
+          controller.pauseFrameCounter();
+        } else {
+          controller.resumeFrameCounter();
+        }
+        break;
+      case 'next':
+        controller.pauseFrameCounter();
+        editorStore.nextFrame(currentFrames.value.length);
+        break;
+      case 'last':
+        editorStore.frame = currentFrames.value.length - 1;
+        break;
+    }
+  }
+
+  const debouncedControlAction = useDebounce((act: PlayerActions) => controlAction(act), 10);
 </script>
 <template>
   <div class="w-full h-full p-3">
@@ -122,6 +154,14 @@
         </div>
       </div>
       <div class="gap-3 w-full flex flex-col">
+        <div class="shadow-md rounded-lg bg-gray-50 dark:bg-gray-700">
+          <EditorControls
+            :frame-count="currentFrames.length"
+            :is-playing="!editorStore.paused"
+            v-model:current-frame="editorStore.frame"
+            @action="debouncedControlAction"
+          />
+        </div>
         <div class="grow shadow-md rounded-lg bg-gray-50 dark:bg-gray-700 overflow-scroll">
           <EditorForms
             :cursor-hotspot="currentCursorHotspot"

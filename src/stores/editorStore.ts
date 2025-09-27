@@ -9,6 +9,8 @@ export const useEditorStore = defineStore('editor', () => {
   const hotspotHint = ref<boolean>(false);
   const dark = ref<boolean>(false);
 
+  const paused = ref<boolean>(false);
+
   function nextFrame(frameCount: number) {
     if (frameCount <= 1) {
       frame.value = 0;
@@ -17,11 +19,20 @@ export const useEditorStore = defineStore('editor', () => {
     frame.value = (frame.value + 1) % frameCount;
   }
 
+  function prevFrame(frameCount: number) {
+    if (frameCount <= 1) {
+      frame.value = 0;
+      return;
+    }
+    frame.value = (frame.value - 1 + frameCount) % frameCount;
+  }
+
   function reset() {
     frame.value = 0;
     selectedSize.value = 0;
     hotspotHint.value = false;
-    ready.value = false
+    ready.value = false;
+    paused.value = false;
   }
 
   return {
@@ -29,8 +40,12 @@ export const useEditorStore = defineStore('editor', () => {
     selectedSize,
     frame,
     hotspotHint,
-    nextFrame,
-    reset,
     dark,
+
+    paused,
+
+    nextFrame,
+    prevFrame,
+    reset,
   };
 });

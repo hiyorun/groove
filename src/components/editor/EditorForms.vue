@@ -20,15 +20,14 @@
   const currentTab = ref<string>('Frames');
 </script>
 <template>
-  <div class="flex flex-col relative">
+  <div class="flex flex-col relative p-2 gap-2">
     <InputTabs
       :tabs="tabs"
       v-model="currentTab"
-      class="m-2"
     />
     <div
       v-if="currentTab === 'Metadata'"
-      class="bg-gray-50 dark:bg-gray-700 p-3 grid grid-cols-2 sm:grid-cols-4 gap-3"
+      class="bg-gray-50 dark:bg-gray-700 grid grid-cols-2 sm:grid-cols-4 gap-2"
     >
       <InputNumber
         :label="'X Hotspot'"
@@ -63,7 +62,7 @@
       v-if="currentTab === 'Frames'"
       class="flex flex-col"
     >
-      <div class="p-3 flex flex-nowrap overflow-x-scroll gap-2">
+      <div class="flex flex-nowrap overflow-x-scroll gap-2">
         <div
           :key="index"
           v-for="(frame, index) in frames"
@@ -72,7 +71,7 @@
             shadow-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-300 hover:dark:bg-gray-500"
         >
           <div class="flex justify-between self-stretch pl-2">
-            <span class="text-gray-900 dark:text-gray-50 w-8">{{ index }}</span>
+            <span class="text-gray-900 dark:text-gray-50 w-8">{{ index + 1 }}</span>
             <!-- <DropdownComponent -->
             <!--   :options="[ -->
             <!--     { -->
